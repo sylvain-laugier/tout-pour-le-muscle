@@ -33,7 +33,6 @@ export const fileToObject = async (csv: File): Promise<FitData[]> => {
       const reader = new FileReader();
       reader.readAsText(csv);
       reader.onload = () => {
-        console.log(reader.result);
 
         if (reader.result) {
           const obj = csvToObj(reader.result as string);

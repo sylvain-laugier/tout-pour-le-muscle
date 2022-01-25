@@ -1,5 +1,5 @@
 import { FitDataService } from './dataHandling';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect,  useState } from 'react';
 import { fileToObject } from './FileHandling';
 import { retrieveFitDataFromLocalStorage, storeFitDataToLocalStorage } from './localStorage';
 import { FitData } from './types';

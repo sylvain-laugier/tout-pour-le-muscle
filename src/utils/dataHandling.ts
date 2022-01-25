@@ -1,6 +1,5 @@
 import { isSameDay } from 'date-fns';
 import subDays from 'date-fns/subDays';
-import { createNoSubstitutionTemplateLiteral } from 'typescript';
 import { FitData, FitDataKeys, FitData7Days } from './types';
 
 type FitDataExtended = FitData & FitData7Days;

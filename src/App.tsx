@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import './App.css';
 import { FileDrop } from 'react-file-drop';
 import FileInfo from './components/FileInfo';
@@ -8,10 +8,13 @@ import { H2 } from './components/HtmlTags';
 
 function App() {
   const [fitDataService, setFileToFitData] = useFitData();
-  const onFileDrop = useCallback((files) => {
-    const [csv] = files;
-    setFileToFitData(csv);
-  }, []);
+  const onFileDrop = useCallback(
+    (files) => {
+      const [csv] = files;
+      setFileToFitData(csv);
+    },
+    [setFileToFitData]
+  );
 
   return (
     <div className="App">
