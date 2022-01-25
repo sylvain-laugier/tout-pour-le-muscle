@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
+import { FileDrop } from 'react-file-drop';
+import FileInfo from './components/FileInfo';
+import { useFitData } from './utils/useFitData';
+import GraphContainer from './components/GraphContainer';
+import { H2 } from './components/HtmlTags';
 
 function App() {
+  const [fitDataService, setFileToFitData] = useFitData();
+  const onFileDrop = useCallback((files) => {
+    const [csv] = files;
+    setFileToFitData(csv);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="text-6xl font-cursive my-5 text-indigo-700 tracking-wide">
+        Tout pour le muscle !
+      </h1>
+      <div>
+        <H2> Dépose le fichier ici BG</H2>
+        {fitDataService && <FileInfo />}
+        <FileDrop onDrop={onFileDrop} />
+
+        {fitDataService && <GraphContainer />}
+      </div>
     </div>
   );
 }
