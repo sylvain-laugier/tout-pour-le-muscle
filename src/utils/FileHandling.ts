@@ -1,4 +1,5 @@
 import { FitData } from './types';
+import { isSameDay } from 'date-fns';
 
 function csvToObj(csv: string){
 
@@ -26,6 +27,12 @@ function csvToObj(csv: string){
   return result; //JavaScript object
 
 }
+const csvHeader = "time,weight,height,bmi,fatRate,bodyWaterRate,boneMass,metabolism,muscleRate,visceralFat"
+const dataCorrection = [
+  "2022-01-23 08:33:36+0000,78.15,191.0,21.4,18.571095,55.86023,3.2434754,1626.0,60.393215,9.0"
+]
+
+console.log(csvToObj([csvHeader, ...dataCorrection].join("\r\n")))
 
 export const fileToObject = async (csv: File): Promise<FitData[]> => {
   return new Promise((resolve, reject) => {
@@ -35,8 +42,18 @@ export const fileToObject = async (csv: File): Promise<FitData[]> => {
       reader.onload = () => {
 
         if (reader.result) {
-          const obj = csvToObj(reader.result as string);
-          resolve(obj);
+          const importedData = csvToObj(reader.result as string);
+          const correctedData = csvToObj([csvHeader, ...dataCorrection].join("\r\n"));
+          for (const correctedDatum of correctedData) {
+            for (let i = 0; i < importedData.length; i += 1) {
+              const importedDatum = importedData[i]
+              if (isSameDay(new Date(importedDatum.time), new Date(correctedDatum.time))) {
+                importedData[i] = correctedDatum;
+              }
+            }
+
+          }
+          resolve(importedData);
         }
       };
     } catch (error) {
