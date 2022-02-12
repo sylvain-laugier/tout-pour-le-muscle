@@ -8,27 +8,39 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { FitDataKeys } from '../utils/types';
+import { AllFitData, AllFitDataKeys } from '../utils/types';
 import { useFitData } from '../utils/useFitData';
 import { H2 } from './HtmlTags';
 
 interface CustomLineChartProps {
-  dataKey: FitDataKeys;
+  dataKey: AllFitDataKeys;
   title: string;
   percentage?: boolean;
+  sevenDay?: boolean;
+  data?: AllFitData[];
+  label: string
 }
-function CustomLineChart({ dataKey, title, percentage }: CustomLineChartProps) {
+function CustomLineChart({
+  dataKey,
+  title,
+  percentage,
+  sevenDay,
+  data,
+  label
+}: CustomLineChartProps) {
   const [fitDataService] = useFitData();
+  if (!data) {
+    return <> </>;
+  }
 
-  const domain = fitDataService?.getDomainRange(dataKey) || [0, 0];
+  const domain = fitDataService?.getDomainRange(dataKey, data) || [0, 0];
   const tickCount = (domain[1] - domain[0]) / 0.5 + 1;
-  console.log({ domain, tickCount });
   return (
     <div>
       <H2> {title}</H2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={fitDataService?.fitData}
+          data={data}
           margin={{
             top: 5,
             right: 30,
@@ -51,17 +63,19 @@ function CustomLineChart({ dataKey, title, percentage }: CustomLineChartProps) {
             stroke="#8884d8"
             strokeWidth={3}
             activeDot={{ r: 8 }}
-            name={title}
+            name={label}
           />
 
-          <Line
-            type="monotone"
-            dataKey={`${dataKey}7day`}
-            stroke="#D99F9A"
-            strokeWidth={3}
-            activeDot={{ r: 8 }}
-            name={`Moyenne glissante du ${title}`}
-          />
+          {sevenDay && (
+            <Line
+              type="monotone"
+              dataKey={`${dataKey}7day`}
+              stroke="#D99F9A"
+              strokeWidth={3}
+              activeDot={{ r: 8 }}
+              name={`Moyenne glissante du ${label}`}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>
