@@ -13,10 +13,11 @@ export class FitDataService {
 
   }
 
-  getDomainRange(key: FitDataKeys, range = 0.5): [number, number] {
-    return [
-      Math.min(...this.fitData.map(data => parseFloat(data[key])) ) - range,
-      Math.max(...this.fitData.map(data => parseFloat(data[key])) ) + range];
+  getDomainRange(key: FitDataKeys): [number, number] {
+    const min = Math.floor(Math.min(...this.fitData.map(data => parseFloat(data[key])))* 2) /2;
+    const max = Math.ceil(Math.max(...this.fitData.map(data => parseFloat(data[key])) )* 2) / 2;
+    
+    return [min, max]
   }
 
   prepareFitData(fitData: FitData[]): FitDataExtended[]  {

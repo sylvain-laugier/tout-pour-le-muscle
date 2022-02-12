@@ -15,19 +15,14 @@ import { H2 } from './HtmlTags';
 interface CustomLineChartProps {
   dataKey: FitDataKeys;
   title: string;
-  range: number;
   percentage?: boolean;
 }
-function CustomLineChart({
-  dataKey,
-  title,
-  range,
-  percentage,
-}: CustomLineChartProps) {
+function CustomLineChart({ dataKey, title, percentage }: CustomLineChartProps) {
   const [fitDataService] = useFitData();
 
-  const domain = fitDataService?.getDomainRange(dataKey, range);
-
+  const domain = fitDataService?.getDomainRange(dataKey) || [0, 0];
+  const tickCount = (domain[1] - domain[0]) / 0.5 + 1;
+  console.log({ domain, tickCount });
   return (
     <div>
       <H2> {title}</H2>
@@ -43,7 +38,12 @@ function CustomLineChart({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />
-          <YAxis domain={domain} allowDecimals={percentage} />
+          <YAxis
+            domain={domain}
+            allowDecimals={percentage}
+            tickCount={tickCount}
+            interval={0}
+          />
           <Tooltip />
           <Line
             type="monotone"

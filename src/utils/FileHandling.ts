@@ -32,7 +32,6 @@ const dataCorrection = [
   "2022-01-23 08:33:36+0000,78.15,191.0,21.4,18.571095,55.86023,3.2434754,1626.0,60.393215,9.0"
 ]
 
-console.log(csvToObj([csvHeader, ...dataCorrection].join("\r\n")))
 
 export const fileToObject = async (csv: File): Promise<FitData[]> => {
   return new Promise((resolve, reject) => {
