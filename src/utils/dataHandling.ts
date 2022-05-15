@@ -10,12 +10,14 @@ import {
 export class FitDataService {
   public fitData: FitDataExtended[];
   public fitWeeklyData: FitWeelkyData[];
+  public fitMonthlyData: FitWeelkyData[];
   private rawData: FitData[];
 
   constructor(fitData: FitData[]) {
     this.rawData = fitData;
     this.fitData = this.prepareFitData(fitData);
     this.fitWeeklyData = this.prepareFitWeeklyData(fitData);
+    this.fitMonthlyData = this.prepareFitMonthlylyData(fitData);
   }
 
   getDomainRange(key: AllFitDataKeys, data: any[]): [number, number] {
@@ -103,12 +105,8 @@ export class FitDataService {
         const previousDate = new Date(arr[i - 1].time);
         if (timeEqualityFunction(date, previousDate)) {
           const { muscleRate, weight, fatRate } = currentValue;
-          const {
-            muscleRateWeekly,
-            fatRateWeekly,
-            weightWeekly,
-            count,
-          } = result.computed;
+          const { muscleRateWeekly, fatRateWeekly, weightWeekly, count } =
+            result.computed;
           result.computed = {
             muscleRateWeekly: muscleRateWeekly + parseFloat(muscleRate),
             fatRateWeekly: fatRateWeekly + parseFloat(fatRate),
@@ -116,12 +114,8 @@ export class FitDataService {
             count: count + 1,
           };
         } else {
-          const {
-            muscleRateWeekly,
-            fatRateWeekly,
-            weightWeekly,
-            count,
-          } = result.computed;
+          const { muscleRateWeekly, fatRateWeekly, weightWeekly, count } =
+            result.computed;
           result.fitWeeklyData.push({
             muscleRateWeekly: (muscleRateWeekly / count).toFixed(2),
             fatRateWeekly: (fatRateWeekly / count).toFixed(2),

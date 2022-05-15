@@ -49,6 +49,26 @@ function GraphContainer() {
           label="Taux de muscle "
         />
       </div>
+      <div className=" grid grid-cols-3 gap-4">
+        <CustomLineChart
+          data={fitDataService?.fitMonthlyData}
+          dataKey="weightWeekly"
+          title="Poids / Mois "
+          label="Poids "
+        />
+        <CustomLineChart
+          data={fitDataService?.fitMonthlyData}
+          dataKey="fatRateWeekly"
+          title="Taux de graisse / Mois "
+          label="Taux de graisse "
+        />
+        <CustomLineChart
+          data={fitDataService?.fitMonthlyData}
+          dataKey="muscleRateWeekly"
+          title="Taux de muscle / Mois"
+          label="Taux de muscle "
+        />
+      </div>
     </>
   );
 }
